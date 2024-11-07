@@ -1,0 +1,96 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema biblioteka
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema biblioteka
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `biblioteka` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `biblioteka` ;
+
+-- -----------------------------------------------------
+-- Table `biblioteka`.`bibliotekar`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteka`.`bibliotekar` (
+  `IDbib` INT NOT NULL AUTO_INCREMENT,
+  `ime` VARCHAR(45) NULL DEFAULT NULL,
+  `prezime` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(60) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`IDbib`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `biblioteka`.`clan`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteka`.`clan` (
+  `idc` INT NOT NULL AUTO_INCREMENT,
+  `ime` VARCHAR(45) NULL DEFAULT NULL,
+  `prezime` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idc`),
+  UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 10
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `biblioteka`.`knjiga`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteka`.`knjiga` (
+  `IDk` INT NOT NULL AUTO_INCREMENT,
+  `naziv` VARCHAR(45) NULL DEFAULT NULL,
+  `brprimeraka` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`IDk`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `biblioteka`.`pozajmica`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `biblioteka`.`pozajmica` (
+  `idp` INT NOT NULL AUTO_INCREMENT,
+  `datumUzimanja` DATETIME NULL DEFAULT NULL,
+  `vracena` TINYINT NULL DEFAULT '0',
+  `idknjige` INT NULL DEFAULT NULL,
+  `idclana` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`idp`),
+  INDEX `idc_idx` (`idclana` ASC) VISIBLE,
+  INDEX `IDk_idx` (`idknjige` ASC) VISIBLE,
+  CONSTRAINT `idc`
+    FOREIGN KEY (`idclana`)
+    REFERENCES `biblioteka`.`clan` (`idc`),
+  CONSTRAINT `IDk`
+    FOREIGN KEY (`idknjige`)
+    REFERENCES `biblioteka`.`knjiga` (`IDk`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
